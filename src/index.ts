@@ -1,9 +1,14 @@
 import 'reflect-metadata';
-import { Block } from './Block';
 import { BlockChain } from './BlockChain';
 
-const Zchain = new BlockChain();
+const main = async () => {
+	const Zchain = new BlockChain();
 
-Zchain.addBlock(new Block(new Date().getTime(), []));
+	Zchain.addNewTransaction({ from: 'Bob', to: 'Alice', amount: 1 });
+	await Zchain.mine();
+	console.log('Chain: ', JSON.stringify(Zchain.chain, null, 2));
+};
 
-console.log(JSON.stringify(Zchain.chain, null, 2));
+main()
+	.then(r => r)
+	.catch((e: unknown) => e);

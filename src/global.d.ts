@@ -1,8 +1,13 @@
 interface IBlockChain {
 	chain: IBlock[];
+	unconfirmedTransactions: Transaction[];
 	difficulty: number;
 	getLastBlock(): IBlock;
-	addBlock(block: IBlock): void;
+	proofOfWork(block: IBlock): Promise<Hash>;
+	addBlock(block: IBlock, proof: Hash): boolean;
+	isValidProof(block: IBlock, blockHash: Hash): boolean;
+	addNewTransaction(transaction: Transaction): void;
+	mine(): Promise<BlockIndex | boolean>;
 	isValid(): boolean;
 }
 
@@ -13,11 +18,14 @@ type Transaction = {
 };
 
 interface IBlock {
+	index: number;
 	timeStamp: number;
 	transactions: Transaction[];
-	hash: string;
-	prevHash: string;
+	hash: Hash;
+	prevHash: Hash;
 	getHash: () => string;
-	mine(difficulty: number): void;
 	nonce: number;
 }
+
+type Hash = string;
+type BlockIndex = number;
