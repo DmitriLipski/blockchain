@@ -17,7 +17,7 @@
 		"prepare": "husky install"
 	},
 	"dependencies": {
-		"chalk": "5.0.0",
+		"chalk": "4.1.1",
 		"reflect-metadata": "0.1.13",
 		"ts-node": "10.4.0",
 		"typedi": "0.10.0",

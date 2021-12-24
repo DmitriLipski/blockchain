@@ -1,4 +1,5 @@
 import { Block } from './Block';
+import chalk from 'chalk';
 
 export class BlockChain implements IBlockChain {
 	chain: IBlock[] = [];
@@ -57,7 +58,7 @@ export class BlockChain implements IBlockChain {
 	}
 
 	async mine() {
-		console.log('Start mining...');
+		console.log(chalk.yellow.bold('Start mining...'));
 		if (this.unconfirmedTransactions.length === 0) {
 			return false;
 		}
@@ -74,7 +75,11 @@ export class BlockChain implements IBlockChain {
 		const proof = await this.proofOfWork(newBlock);
 		this.addBlock(newBlock, proof);
 		this.unconfirmedTransactions = [];
-		console.log('isValid', this.isValid());
+		const isValid = this.isValid();
+
+		isValid
+			? console.log(chalk.green.bold('Chain is valid'))
+			: console.log(chalk.red.bold('Chain is not valid'));
 
 		return newBlock.index;
 	}
