@@ -2,13 +2,16 @@ import { Block } from './Block';
 import chalk from 'chalk';
 
 export class BlockChain implements IBlockChain {
-	chain: IBlock[] = [];
+	chain: IBlock[];
 	unconfirmedTransactions: Transaction[] = [];
 	difficulty: number;
 
-	constructor() {
-		this.difficulty = 5;
-		this.createGenesisBlock();
+	constructor(chain: IBlock[]) {
+		this.chain = chain;
+		this.difficulty = 3;
+		if (chain.length === 0) {
+			this.createGenesisBlock();
+		}
 	}
 
 	createGenesisBlock() {
@@ -58,7 +61,7 @@ export class BlockChain implements IBlockChain {
 	}
 
 	async mine() {
-		console.log(chalk.yellow.bold('Start mining...'));
+		console.log(chalk.blue.bold('Start mining...'));
 		if (this.unconfirmedTransactions.length === 0) {
 			return false;
 		}
@@ -75,11 +78,16 @@ export class BlockChain implements IBlockChain {
 		const proof = await this.proofOfWork(newBlock);
 		this.addBlock(newBlock, proof);
 		this.unconfirmedTransactions = [];
+
+		console.log(
+			chalk.green.bold('Finish mining. Hash: ', chalk.yellow.bold(proof)),
+		);
+
 		const isValid = this.isValid();
 
 		isValid
-			? console.log(chalk.green.bold('Chain is valid'))
-			: console.log(chalk.red.bold('Chain is not valid'));
+			? console.log(`\n${chalk.green.bold('Chain is valid')}`)
+			: console.log(`\n${chalk.red.bold('Chain is not valid')}`);
 
 		return newBlock.index;
 	}
@@ -89,14 +97,15 @@ export class BlockChain implements IBlockChain {
 			const currentBlock = this.chain[i];
 			const prevBlock = this.chain[i - 1];
 
-			if (
-				currentBlock.hash !== currentBlock.getHash() ||
-				prevBlock.hash !== currentBlock.prevHash
-			) {
+			if (prevBlock.hash !== currentBlock.prevHash) {
 				return false;
 			}
 		}
 
 		return true;
+	}
+
+	getChainLength() {
+		return this.chain.length;
 	}
 }

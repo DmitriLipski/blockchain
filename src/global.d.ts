@@ -9,6 +9,7 @@ interface IBlockChain {
 	addNewTransaction(transaction: Transaction): void;
 	mine(): Promise<BlockIndex | boolean>;
 	isValid(): boolean;
+	getChainLength(): number;
 }
 
 type Transaction = {
