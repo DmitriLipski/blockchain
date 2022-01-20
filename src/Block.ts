@@ -1,4 +1,4 @@
-import * as CryptService from './crypto';
+import * as CryptService from './packages/crypto';
 
 export class Block implements IBlock {
 	index: number;

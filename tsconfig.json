@@ -2,7 +2,13 @@
 	"ts-node": {
 		"files": true
 	},
-	"files": ["src/index.ts", "src/global.d.ts"],
+	"files": [
+		"src/index.ts",
+		"src/packages/wallet/index.ts",
+		"src/global.d.ts",
+		"src/packages/wallet/types.ts",
+		"src/packages/crypto/index.ts"
+	],
 	"compilerOptions": {
 		"module": "commonjs",
 		"lib": ["dom", "es6", "es2017", "esnext.asynciterable"],
